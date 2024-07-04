@@ -109,6 +109,7 @@ used. AWS CodeDeploy is one tool to handling deployment.
 - Mocks and unit tests.
 - Integration tests.
 - Stats for observability.
+- Logging improvement.  Remove PII data from logs.
 - Exponential backoff retry logic for SQS Queue read, database connection and 
 database writes.
 - Batch database inserts rather than individual insert statements.

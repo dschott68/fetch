@@ -21,6 +21,8 @@ class FetchApp:
     def is_valid_message(self, message):
         """
         Validate the message to ensure it has all the required fields.
+
+        TODO: Add more validation checks including data types, lengths, valid values, etc.
         """
         if not message:
             return False
@@ -69,6 +71,7 @@ class FetchApp:
             return
 
         # Process messages from the queue
+        # TODO: Remove PII data from log messages
         for message in queue.read_message():
             try:
                 logging.debug(f"Processing message: {message}")
@@ -85,10 +88,8 @@ class FetchApp:
 
                 logging.debug(f"Wrote to Postgres: {masked_message}")
 
-                # break
             except Exception as e:
                 logging.error(f"Error processing message: {e} for message: {message}.")
-                break
 
         logging.info("Finished processing all messages")
 

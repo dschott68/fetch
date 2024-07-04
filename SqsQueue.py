@@ -7,10 +7,15 @@ import logging
 
 class SqsQueue:
     """
-    Read JSON data containing user login behavior from an AWS SQS Queue, that is made
-    available via a custom localstack image that has the data pre loaded.
+    Read JSON data containing user login behavior from an AWS SQS Queue, that
+    is made available via a custom localstack image that has the data
+    pre-loaded.
 
     https://docs.aws.amazon.com/sqs/
+
+    TODO: Add asynchronous I/O handling and exponential backoff retry logic.
+    Use secure method for getting access key. Remove PII data from log
+    messages.
     """
 
     def __init__(

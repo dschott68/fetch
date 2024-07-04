@@ -7,6 +7,9 @@ class PostgresWriter:
     PostgresWriter is the class that writes user login data to the Postgres
     database. It uses the psycopg2 library to connect to the database and write
     the data.
+
+    TODO: Add connection pool, exponential backoff retry logic, and error
+    handling. Use secure method for getting user and password.
     """
 
     LOGIN_QUERY = """
