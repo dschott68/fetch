@@ -45,7 +45,7 @@ After requirement and building the application.
   ```
 
 ## Discussion
-**How will you read messages from the queue?**
+### How will you read messages from the queue?
 
 FetchApp uses [boto3](https://boto3.amazonaws.com/v1/documentation/api/latest/index.html) 
 API and resource instance for an object-oriented interface. The implementation 
@@ -53,21 +53,21 @@ following the [AWS Sample Tutorial](https://boto3.amazonaws.com/v1/documentation
 The message body is converted from JSON to a Python dictionary and then 
 yielded for processing. Finally, the message is deleted from the queue.
 
-**What type of data structures should be used?**
+### What type of data structures should be used?
 
 The message JSON is converted to a Python dictionary.  By using a generator 
 function yielding a individual dictionary for each message, no extra collection 
 data structure is need to store the messsages. This is more memory-efficient 
 for large datasets.
 
-**How will you mask the PII data so that duplicate values can be identified?**
+### How will you mask the PII data so that duplicate values can be identified?
 
 FetchApp use SHA-256 hash to mask the values. Duplicate values that are hashed
 will result in the same hash value, thus they can be identified by looking for 
 duplicate hash values.  SHA-256 hash is widely used and secure. If higher level
 of security is a requirement, SHA-512 or even AES 256-bit could be used. 
 
-**What will be your strategy for connecting and writing to Postgres?**
+### What will be your strategy for connecting and writing to Postgres?
 
 FetchApp uses the popular `psycopg2` module for connecting and writing to
 Postgres. The connection string is currently supplied by in the `config.ini`
@@ -78,7 +78,7 @@ For production, both a connection pool and retry logic should be implemented.
 Batch inserts would likely be more performant than individual inserts 
 statements. 
 
-**Where and how will your application run?**
+### Where and how will your application run?
 
 For the assignment, building a Docker image and running in Docker on the 
 localhost makes the most sense as LocalStack and Postgres Docker images were 
@@ -86,7 +86,7 @@ supplied. The `Dockerfile` builds the image then `docker run` to run the
 application.
 
 ## Questions
-**How would you deploy this application in production?**
+### How would you deploy this application in production?
 
 [Tutorial: Using a Lambda function to access an Amazon RDS database](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/rds-lambda-tutorial.html) 
 provides an excellect guide to a recommendation on where and how to run this 
@@ -98,7 +98,7 @@ application run, [Building Lambda functions with Python](https://docs.aws.amazon
 provides a guide. For the deployment, the companies standard CI/CD should be 
 used. AWS CodeDeploy is one tool to handling deployment.
 
-**What other components would you want to add to make this production ready?**
+### What other components would you want to add to make this production ready?
 
 Security for keys, user name, password is a must.
 A database conneciton pool.
@@ -119,7 +119,7 @@ Security review of hashing and PII data.
 DBA review.
 Load testing.
 
-**How can this application scale with a growing dataset**
+### How can this application scale with a growing dataset
 
 Threading and asynchronous I/O is important.  Since both the SQS queue wait/read 
 and the database writes are I/O operations, this is a first area to look at
@@ -127,14 +127,14 @@ scale. Several Python modules can be looked at: `asyncio`, `aioboto3`, `aiodbc`.
 Use of a database connection pool is standard and should be implemented even 
 before need for scale.
 
-**How can PII be recovered later on?**
+### How can PII be recovered later on?
 
 The current implementation of a SHA-256 hash is not directly recoverable. If 
 staying with hash, then orginal data could be stored in a access-controlled 
 storage. An alternative to hash is encryption. The secret key can be used to 
 recover the PII data via decryption by authorized personnel.
 
-**What are the assumptions you made?**
+## What are the assumptions you made?
 
 The application shuts down after the queue is empty. Production should wait for 
 future messages.
