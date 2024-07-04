@@ -1,4 +1,6 @@
 # Fetch App
+This Python application is an implementation of the requirements from 
+[ETL off a SQS Queue](https://fetch-hiring.s3.amazonaws.com/data-engineer/pii-masking.pdf)
 
 ## Requirements
 1. Download [Docker](https://docs.docker.com/get-docker/)
