@@ -31,7 +31,7 @@ This Python application is an implementation of the requirements from
   ```
 
 ## Run the application
-After requirement and building the application.  
+After [requirement](https://github.com/dschott68/fetch?tab=readme-ov-file#requirements) and [building the application](https://github.com/dschott68/fetch?tab=readme-ov-file#building-the-application).  
 
 1. Start Docker
 
@@ -102,24 +102,24 @@ used. AWS CodeDeploy is one tool to handling deployment.
 
 ### What other components would you want to add to make this production ready?
 
-Security for keys, user name, password is a must.
-A database conneciton pool.
-Asynchronous I/O for SQS queue read and database write.
-Threading.
-Mocks and unit tests.
-Integration tests.
-Stats for observability.
-Exponential backoff retry logic for SQS Queue read, database connection and 
+- Security for keys, user name, password is a must.
+- A database conneciton pool.
+- Asynchronous I/O for SQS queue read and database write.
+- Threading.
+- Mocks and unit tests.
+- Integration tests.
+- Stats for observability.
+- Exponential backoff retry logic for SQS Queue read, database connection and 
 database writes.
-Batch database inserts rather than individual insert statements.
-Tranformation and validation rules for data prior to writing into database.
-Write failed messages out to a separate storage location for easy access for 
+- Batch database inserts rather than individual insert statements.
+- Tranformation and validation rules for data prior to writing into database.
+- Write failed messages out to a separate storage location for easy access for 
 investigations.
-Review and implement best practices for `boto3`, SQS, `psycopg2`, Postgres, 
+- Review and implement best practices for `boto3`, SQS, `psycopg2`, Postgres, 
 AWS.
-Security review of hashing and PII data.
-DBA review.
-Load testing.
+- Security review of hashing and PII data.
+- DBA review.
+- Load testing.
 
 ### How can this application scale with a growing dataset
 
