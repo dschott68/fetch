@@ -19,7 +19,7 @@ This Python application is an implementation of the requirements from
 
 1. Clone the repository.
   ```
-  git clone https://github.com/dschott/fetch.git
+  git clone https://github.com/dschott68/fetch.git
   cd fetch
   ```
 
@@ -36,12 +36,15 @@ After [requirement](https://github.com/dschott68/fetch?tab=readme-ov-file#requir
 1. Start Docker
 
 2. Start LocalStack and Postgres 
+  
   From directory where fetch repo is cloned
   ```
   docker-compose up
   ```
 
 3. Start the application
+
+  Open a new terminal window and go to the directory where fetch repo is cloned
   ```
   docker run -p 4000:80 fetch-app
   ```
