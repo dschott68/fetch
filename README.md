@@ -35,16 +35,12 @@ After [requirement](https://github.com/dschott68/fetch?tab=readme-ov-file#requir
 
 1. Start Docker
 
-2. Start LocalStack and Postgres 
-  
-  From directory where fetch repo is cloned
+2. In a terminal window, go to the directory where the repo was cloned. Start LocalStack and Postgres by running the command:
   ```
   docker-compose up
   ```
 
-3. Start the application
-
-  Open a new terminal window and go to the directory where fetch repo is cloned
+3. In a new terminal window, go to the directory where the repo was cloned. Start the application by running the command:
   ```
   docker run -p 4000:80 fetch-app
   ```
