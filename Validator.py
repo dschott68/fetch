@@ -6,8 +6,8 @@ class Validator:
 
         TODO: Add more validation checks including data types, lengths, valid values,
         etc.
-
         """
+
         if not message:
             return False
 
