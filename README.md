@@ -111,6 +111,9 @@ used. AWS CodeDeploy is one tool to handling deployment.
 - Logging improvement.  Remove PII data from logs.
 - Exponential backoff retry logic for SQS Queue read, database connection and 
 database writes.
+- `boto3` uses HTTP protocol to communicate with AWS, check that all calls 
+have a [timeout](https://botocore.amazonaws.com/v1/documentation/api/latest/reference/config.html#botocore.config.Config) 
+set to avoid infinite waits. 
 - Batch database inserts rather than individual insert statements.
 - Tranformation and validation rules for data prior to writing into database.
 - Write failed messages out to a separate storage location for easy access for 
