@@ -2,6 +2,7 @@ from AppConfig import AppConfig
 from PiiMasker import PiiMasker
 from PostgresWriter import PostgresWriter
 from SqsQueue import SqsQueue
+from Validator import Validator
 import logging
 
 
@@ -17,35 +18,6 @@ class FetchApp:
 
         log_format = "%(asctime)s [%(levelname)s] %(message)s"
         logging.basicConfig(level=logging.DEBUG, format=log_format)
-
-    def is_valid_message(self, message):
-        """
-        Validate the message to ensure it has all the required fields.
-
-        TODO: Add more validation checks including data types, lengths, valid values, etc.
-        """
-        if not message:
-            return False
-
-        if not message.get("user_id"):
-            return False
-
-        if not message.get("device_type"):
-            return False
-
-        if not message.get("ip"):
-            return False
-
-        if not message.get("device_id"):
-            return False
-
-        if not message.get("locale"):
-            return False
-
-        if not message.get("app_version"):
-            return False
-
-        return True
 
     def run(self):
         # Initialize the queue, masker, writer and logging
@@ -76,7 +48,7 @@ class FetchApp:
             try:
                 logging.debug(f"Processing message: {message}")
 
-                if not self.is_valid_message(message):
+                if not Validator().is_valid_message(message):
                     logging.error(f"Skipping invalid message: {message}.")
                     continue
 
