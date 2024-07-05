@@ -5,12 +5,12 @@ This Python application is an implementation of the requirements from
 ## Requirements
 1. Download [Docker](https://docs.docker.com/get-docker/)
 
-2. Get Docker image for Postgres
+2. In a terminal window, get Docker image for Postgres by running the command:
   ``` 
   docker pull fetchdocker/data-takehome-postgres
   ```
 
-3. Get Docker image for LocalStack
+3. Get Docker image for LocalStack by running the command:
   ```
   docker pull fetchdocker/data-takehome-localstack
   ```
