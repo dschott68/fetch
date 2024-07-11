@@ -26,6 +26,7 @@ class SqsQueue:
         self.region = region
         self.aws_access_key_id = aws_access_key_id
         self.aws_secret_access_key = aws_secret_access_key
+        self.session = aiobotocore.session.get_session()
 
         log_format = "%(asctime)s - %(levelname)s - %(message)s"
         logging.basicConfig(level=logging.DEBUG, format=log_format)
@@ -47,18 +48,21 @@ class SqsQueue:
             messages = response.get("Messages", [])
 
             for message in messages:
-                logging.debug(f"Message body: {message.body}")
+                logging.debug(f"Message body: {message['Body']}")
 
                 # Convert the message body from JSON to a Python dictionary
-                logging.debug(f"Message json: {json.loads(message.body)}")
+                logging.debug(f"Message json: {json.loads(message['Body'])}")
 
                 # yield dict from message body using json.loads
-                yield json.loads(message.body)
+                yield json.loads(message["Body"])
 
-                # Let the queue know that the message is processed
-                message.delete()
-                logging.debug(f"Message deleted {message.body}")
-
+            # Delete the message from the queue
+            # Note: You need the ReceiptHandle to delete the message
+            receipt_handle = message["ReceiptHandle"]
+            await sqs.delete_message(
+                QueueUrl=self.queue_url, ReceiptHandle=receipt_handle
+            )
+            logging.debug(f"Message deleted {receipt_handle}")
         # # Get resource
         # # https://boto3.amazonaws.com/v1/documentation/api/latest/reference/core/session.html#boto3.session.Session.resource
         # resource = boto3.resource(

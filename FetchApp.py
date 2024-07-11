@@ -45,31 +45,26 @@ class FetchApp:
 
         # Process messages from the queue
         # TODO: Remove PII data from log messages
-        while True:
-            messages = await queue.read_messages()
+        async for message in queue.read_messages():
+            try:
+                logging.debug(f"Processing message: {message}")
 
-            for message in messages:
-                try:
-                    logging.debug(f"Processing message: {message}")
+                if not Validator().is_valid_message(message):
+                    logging.error(f"Skipping invalid message: {message}.")
+                    continue
 
-                    if not Validator().is_valid_message(message):
-                        logging.error(f"Skipping invalid message: {message}.")
-                        continue
+                masked_message = pii_masker.mask_all(message)
 
-                    masked_message = pii_masker.mask_all(message)
+                logging.debug(f"Masked message: {masked_message}")
 
-                    logging.debug(f"Masked message: {masked_message}")
+                postgres_writer.write_user_logins(masked_message)
 
-                    postgres_writer.write_user_logins(masked_message)
+                logging.debug(f"Wrote to Postgres: {masked_message}")
 
-                    logging.debug(f"Wrote to Postgres: {masked_message}")
+            except Exception as e:
+                logging.error(f"Error processing message: {e} for message: {message}.")
 
-                except Exception as e:
-                    logging.error(
-                        f"Error processing message: {e} for message: {message}."
-                    )
-
-            logging.info("Finished processing all messages")
+        logging.info("Finished processing all messages")
 
 
 asyncio.run(FetchApp().run())

@@ -37,7 +37,7 @@ After [requirement](https://github.com/dschott68/fetch?tab=readme-ov-file#requir
 
 2. In a terminal window, go to the directory where the repo was cloned. Start LocalStack and Postgres by running the command:
   ```
-  docker-compose up
+  docker compose up
   ```
 
 3. In a new terminal window, go to the directory where the repo was cloned. Start the application by running the command:
