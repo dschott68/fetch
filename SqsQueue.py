@@ -1,4 +1,4 @@
-import aiobotocore.session
+from aiobotocore import session
 import json
 import logging
 
@@ -26,7 +26,6 @@ class SqsQueue:
         self.region = region
         self.aws_access_key_id = aws_access_key_id
         self.aws_secret_access_key = aws_secret_access_key
-        self.session = aiobotocore.session.get_session()
 
         log_format = "%(asctime)s - %(levelname)s - %(message)s"
         logging.basicConfig(level=logging.DEBUG, format=log_format)
@@ -37,7 +36,8 @@ class SqsQueue:
         each to a dictionary and yields each dictionary. The messages are
         then deleted.
         """
-        async with self.session.create_client(
+        session = session.get_session()
+        async with session.create_client(
             "sqs",
             endpoint_url=self.endpoint_url,
             region_name=self.region,
