@@ -1,3 +1,4 @@
+import asyncio
 from AppConfig import AppConfig
 from PiiMasker import PiiMasker
 from PostgresWriter import PostgresWriter
@@ -19,7 +20,7 @@ class FetchApp:
         log_format = "%(asctime)s [%(levelname)s] %(message)s"
         logging.basicConfig(level=logging.DEBUG, format=log_format)
 
-    def run(self):
+    async def run(self):
         # Initialize the queue, masker, writer and logging
         try:
             queue = SqsQueue(
@@ -44,26 +45,31 @@ class FetchApp:
 
         # Process messages from the queue
         # TODO: Remove PII data from log messages
-        for message in queue.read_message():
-            try:
-                logging.debug(f"Processing message: {message}")
+        while True:
+            messages = await queue.read_messages()
 
-                if not Validator().is_valid_message(message):
-                    logging.error(f"Skipping invalid message: {message}.")
-                    continue
+            for message in messages:
+                try:
+                    logging.debug(f"Processing message: {message}")
 
-                masked_message = pii_masker.mask_all(message)
+                    if not Validator().is_valid_message(message):
+                        logging.error(f"Skipping invalid message: {message}.")
+                        continue
 
-                logging.debug(f"Masked message: {masked_message}")
+                    masked_message = pii_masker.mask_all(message)
 
-                postgres_writer.write_user_logins(masked_message)
+                    logging.debug(f"Masked message: {masked_message}")
 
-                logging.debug(f"Wrote to Postgres: {masked_message}")
+                    postgres_writer.write_user_logins(masked_message)
 
-            except Exception as e:
-                logging.error(f"Error processing message: {e} for message: {message}.")
+                    logging.debug(f"Wrote to Postgres: {masked_message}")
 
-        logging.info("Finished processing all messages")
+                except Exception as e:
+                    logging.error(
+                        f"Error processing message: {e} for message: {message}."
+                    )
+
+            logging.info("Finished processing all messages")
 
 
-FetchApp().run()
+asyncio.run(FetchApp().run())
